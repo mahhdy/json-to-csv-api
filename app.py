@@ -12,11 +12,11 @@ app = Flask(__name__)
 def convert_json_to_csv():
     try:
         # Get JSON data from request
-        json_data = request.get_json(force=True)
+        json_data = request.get_json(force=True)        
+        payload = json_data.get('body', json_data)
 
-        # Extract headers and rows
-        headers_raw = json_data["body"]["header"]
-        data_rows = json_data["body"]["data"]
+        headers_raw = payload['header']
+        data_rows = payload['data']
 
         # Extract text inside square brackets from headers
         headers_clean = [
@@ -51,16 +51,15 @@ def convert_json_to_csv():
 def convert_to_csv_base64():
     try:
         # Parse JSON input
-        data = request.get_json(force=True)
-        if not data or "body" not in data:
+        t_data = request.get_json(force=True)
+        body = t_data.get('body', t_data)
+        if not body or "data" not in body:
             return (
                 jsonify(
-                    {"error": "Invalid input format. Expecting { 'body': { ... } }"}
+                    {"error": "Invalid input format. Expecting { 'data': { ... } }"}
                 ),
                 400,
             )
-
-        body = data["body"]
         headers_raw = body.get("header", [])
         rows = body.get("data", [])
 
