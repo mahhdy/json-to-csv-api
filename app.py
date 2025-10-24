@@ -37,8 +37,8 @@ def convert_json_to_csv():
 
         return jsonify(
             {
-                "filename": "converted.csv",
-                "content_base64": csv_base64,
+                "file_name": "converted.csv",
+                "file_base64": csv_base64,
                 "content_type": "text/csv",
             }
         )
